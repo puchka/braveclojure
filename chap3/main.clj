@@ -10,3 +10,9 @@
   #(- % dec-by))
 
 (def dec10 (dec-maker 10))
+
+;;4. Write a function, mapset, that works like map except the return value is a set: 
+
+(defn mapset
+  [fn & args]
+  (set (apply map fn args)))
