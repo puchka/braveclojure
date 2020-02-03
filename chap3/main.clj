@@ -89,3 +89,39 @@
                (into final-body-parts
                      (alienize
                       (set [part (matching-part part)]))))))))
+
+;; 6. Create a function that generalizes symmetrize-body-parts and
+;; the function you created in Exercise 5.
+
+(defn multiplize
+  [parts n]
+  (if (some? (second parts))
+    (loop [idx (range 1 (+ n 1)) multiplized-parts []]
+      (if (empty? idx)
+        multiplized-parts
+        (recur (rest idx)
+          (into multiplized-parts [
+            { :name (str (:name (first parts)) (if (> n 1) (str "-" (first (take 1 idx))) ""))
+              :size (:size (first parts))
+            }
+            { :name (str (:name (second parts)) (if (> n 1) (str "-" (first (take 1 idx))) ""))
+              :size (:size (second parts))
+            }
+          ]))
+      )
+    )
+    [(first parts)]
+  )
+)
+
+(defn symmetrize-body-parts-gen
+  [asym-body-parts n]
+  (loop [remaining-asym-body-parts asym-body-parts
+         final-body-parts []]
+    (if (empty? remaining-asym-body-parts)
+      final-body-parts
+      (let [[part & remaining] remaining-asym-body-parts]
+        (recur remaining
+               (into final-body-parts
+                     (multiplize
+                      (set [part (matching-part part)]) n)))))))
