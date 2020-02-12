@@ -37,3 +37,9 @@
     (if (empty? keys)
       (assoc m k mp)
       (recur (assoc {} (last keys) mp) (drop-last keys)))))
+
+;; 5. Implement update-in.
+
+(defn my-update-in
+  [m ks f & args]
+   (assoc-in m ks (apply f (get-in m ks) args)))
